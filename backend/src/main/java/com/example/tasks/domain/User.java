@@ -2,6 +2,8 @@ package com.example.tasks.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,7 +35,8 @@ public class User {
 
     @Column(name = "IS_INTERNAL")
     @Builder.Default
-    private Integer isInternal = 1; // ar trb sa fie Boolean
+    @JdbcTypeCode(SqlTypes.NUMERIC)
+    private Boolean isInternal = true; // ar trb sa fie Boolean
 
     @Column(name = "CREATED_BY", nullable = false)
     private String createdBy;

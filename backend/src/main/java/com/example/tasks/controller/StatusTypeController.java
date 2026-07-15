@@ -12,6 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/statuses")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class StatusTypeController {
     private final StatusTypeService statusTypeService;
 

@@ -3,8 +3,9 @@ package com.example.tasks.service;
 import com.example.tasks.domain.StatusType;
 import com.example.tasks.domain.Task;
 import com.example.tasks.domain.User;
-import com.example.tasks.dto.StatusTypeDTO;
-import com.example.tasks.dto.TaskDTO;
+import com.example.tasks.dto.request.TaskCreateRequestDTO;
+import com.example.tasks.dto.request.TaskUpdateRequestDTO;
+import com.example.tasks.dto.response.TaskResponseDTO;
 import com.example.tasks.exception.StatusNotFoundException;
 import com.example.tasks.exception.TaskNotFoundException;
 import com.example.tasks.exception.UserNotFoundException;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -29,43 +31,44 @@ public class TaskService {
     private final UserRepository userRepository;
     private final StatusTypeRepository statusTypeRepository;
 
-    public List<TaskDTO> getAllTasks() {
+    public List<TaskResponseDTO> getAllTasks() {
         log.info("Tasks retrieved!");
 
         return taskRepository.findAll()
                 .stream()
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
+                .sorted(Comparator.comparing(TaskResponseDTO::getDueDate).reversed())
                 .toList();
     }
 
-    public TaskDTO getTaskById(Long id) {
+    public TaskResponseDTO getTaskById(Long id) {
         log.info("Retrieving task with id: {}", id);
 
         return taskRepository.findById(id)
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
     }
 
-    public List<TaskDTO> getActiveTasks() {
+    public List<TaskResponseDTO> getActiveTasks() {
         log.info("Retrieving active tasks!");
 
         return taskRepository.findByActiveStatus()
                 .stream()
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
                 .toList();
     }
 
-    public List<TaskDTO> getOverdueTasks() {
+    public List<TaskResponseDTO> getOverdueTasks() {
         log.info("Retrieving overdue tasks!");
 
         return taskRepository.findAll()
                 .stream()
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
                 .filter(task -> task.getDueDate() != null && task.getDueDate().isBefore(LocalDateTime.now()))
                 .toList();
     }
 
-    public List<TaskDTO> getTasksByUserId(Long userId) {
+    public List<TaskResponseDTO> getTasksByUserId(Long userId) {
         log.info("Retrieving tasks for user id: {}", userId);
 
         if (!userRepository.existsById(userId)) {
@@ -74,11 +77,11 @@ public class TaskService {
 
         return taskRepository.findByUser_UserId(userId)
                 .stream()
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
                 .toList();
     }
 
-    public List<TaskDTO> getTasksByUsername(String username) {
+    public List<TaskResponseDTO> getTasksByUsername(String username) {
         log.info("Retrieving tasks for username: {}", username);
 
         if (!userRepository.existsByUsername(username)) {
@@ -87,11 +90,11 @@ public class TaskService {
 
         return taskRepository.findByUser_Username(username)
                 .stream()
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
                 .toList();
     }
 
-    public List<TaskDTO> getTasksByStatusName(String statusName) {
+    public List<TaskResponseDTO> getTasksByStatusName(String statusName) {
         log.info("Retrieving tasks with status: {}", statusName);
 
         if (!statusTypeRepository.existsByStatusName(statusName)) {
@@ -100,33 +103,29 @@ public class TaskService {
 
         return taskRepository.findByStatusType_StatusName(statusName)
                 .stream()
-                .map(taskMapper::toDTO)
+                .map(taskMapper::toResponseDTO)
                 .toList();
     }
 
     @Transactional
-    public TaskDTO createTask(TaskDTO taskDTO) {
+    public TaskResponseDTO createTask(TaskCreateRequestDTO taskDTO) {
         log.info("Creating task: {}", taskDTO.getTaskName());
-
-        Task task = taskMapper.toEntity(taskDTO);
 
         User user = userRepository.findById(taskDTO.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("User not found with id: " + taskDTO.getUserId()));
         StatusType statusType = statusTypeRepository.findById(taskDTO.getStatusTypeId())
                 .orElseThrow(() -> new StatusNotFoundException("Status not found with id: " + taskDTO.getStatusTypeId()));
 
-        task.setUser(user);
-        task.setStatusType(statusType);
-        task.setLastUpdatedBy(taskDTO.getCreatedBy());
+        Task task = taskMapper.toEntity(taskDTO, user, statusType);
 
         Task savedTask = taskRepository.save(task);
 
-        return taskMapper.toDTO(savedTask);
+        return taskMapper.toResponseDTO(savedTask);
     }
     
 
     @Transactional
-    public TaskDTO updateTask(Long id, TaskDTO taskDTO) {
+    public TaskResponseDTO updateTask(Long id, TaskUpdateRequestDTO taskDTO) {
         log.info("Updating task with id: {}", id);
 
         Task task = taskRepository.findById(id)
@@ -137,20 +136,15 @@ public class TaskService {
         StatusType statusType = statusTypeRepository.findById(taskDTO.getStatusTypeId())
                 .orElseThrow(() -> new StatusNotFoundException("Status not found with id: " + taskDTO.getStatusTypeId()));
 
-        task.setTaskName(taskDTO.getTaskName());
-        task.setUser(user);
-        task.setStatusType(statusType);
-        task.setDueDate(taskDTO.getDueDate());
-        task.setLastUpdatedBy(taskDTO.getCreatedBy());
-        task.setLastUpdateDate(LocalDateTime.now());
+        taskMapper.updateEntityFromDto(task, taskDTO, user, statusType);
 
         Task updatedTask = taskRepository.save(task);
 
-        return taskMapper.toDTO(updatedTask);
+        return taskMapper.toResponseDTO(updatedTask);
     }
     
     @Transactional
-    public TaskDTO updateTaskStatus(Long taskId, String statusName) {
+    public TaskResponseDTO updateTaskStatus(Long taskId, String statusName) {
         log.info("Updating status of task {} to {}", taskId, statusName);
 
         Task task = taskRepository.findById(taskId)
@@ -160,22 +154,22 @@ public class TaskService {
                 .orElseThrow(() -> new StatusNotFoundException("Status not found with name: " + statusName));
 
         task.setStatusType(status);
-        task.setLastUpdatedBy(task.getCreatedBy());
+        task.setLastUpdatedBy(task.getCreatedBy()); // TODO: to be changed when i have auth
         task.setLastUpdateDate(LocalDateTime.now());
 
         Task updatedTask = taskRepository.save(task);
 
-        return taskMapper.toDTO(updatedTask);
+        return taskMapper.toResponseDTO(updatedTask);
     }
     
     @Transactional
-    public TaskDTO deleteTask(Long id) {
+    public TaskResponseDTO deleteTask(Long id) {
         log.info("Deleting task with id: {}", id);
 
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new TaskNotFoundException("Task not found with id: " + id));
 
-        TaskDTO deletedTask = taskMapper.toDTO(task);
+        TaskResponseDTO deletedTask = taskMapper.toResponseDTO(task);
 
         taskRepository.delete(task);
 

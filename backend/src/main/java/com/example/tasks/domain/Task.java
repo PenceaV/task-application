@@ -29,7 +29,7 @@ public class Task {
     @JoinColumn(name = "STATUS_TYPE_ID")
     private StatusType statusType;
 
-    @Column(name = "DUE_DATE")
+    @Column(name = "DUE_DATE", nullable = false)
     private LocalDateTime dueDate;
 
     @Column(name = "CREATED_BY", nullable = false)
@@ -47,7 +47,8 @@ public class Task {
     private String lastUpdatedBy;
 
     @Column(name = "CREATED_BY_FULLNAME")
-    private String createdByFullName;
+    @Builder.Default
+    private String createdByFullName = "System";
 
 
 }

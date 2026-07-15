@@ -17,7 +17,7 @@ public class UserDTO {
     private String username;
 
     private LocalDateTime birthDate;
-    private Integer isInternal;
+    private Boolean isInternal;
 
     @NotBlank
     private String createdBy;

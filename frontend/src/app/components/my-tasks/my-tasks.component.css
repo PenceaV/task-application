@@ -1,40 +1,40 @@
-table {
-  border-collapse: collapse;
-  border: 2px solid rgb(140 140 140);
-  font-family: sans-serif;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
+.btn-add-task {
+  transition: all 0.2s ease-in-out;
 }
 
-caption {
-  caption-side: bottom;
-  padding: 10px;
-  font-weight: bold;
+.btn-add-task:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
 }
 
-thead,
-tfoot {
-  background-color: rgb(228 240 245);
+.status-pill {
+  padding: 0.5em 1em;
+  font-weight: 500;
+  background-color: #f8f9fa;
+  color: #6c757d;
+  border: 1px solid #dee2e6;
 }
 
-th,
-td {
-  border: 1px solid rgb(160 160 160);
-  padding: 8px 10px;
+.status-pill.not-started {
+  background-color: #ffeeb0;
+  color: #856404;
+  border-color: #ffeeba;
 }
 
-td:last-of-type {
-  text-align: center;
+.status-pill.in-progress {
+  background-color: #a4efff;
+  color: #055160;
+  border-color: #b6effb;
 }
 
-tbody > tr:nth-of-type(even) {
-  background-color: rgb(237 238 242);
+.status-pill.completed {
+  background-color: #a4fb83;
+  color: #177708;
+  border-color: #a4fb83;
 }
 
-tfoot th {
-  text-align: right;
-}
-
-tfoot td {
-  font-weight: bold;
+.status-pill.pending {
+  background-color: #e2e3e5;
+  color: #41464b;
+  border-color: #d6d8db;
 }

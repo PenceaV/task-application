@@ -1,6 +1,8 @@
 package com.example.tasks.controller;
 
-import com.example.tasks.dto.TaskDTO;
+import com.example.tasks.dto.request.TaskCreateRequestDTO;
+import com.example.tasks.dto.request.TaskUpdateRequestDTO;
+import com.example.tasks.dto.response.TaskResponseDTO;
 import com.example.tasks.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -16,57 +18,57 @@ public class TaskController {
     private final TaskService taskService;
 
     @GetMapping
-    public List<TaskDTO> getAllTasks() {
+    public List<TaskResponseDTO> getAllTasks() {
         return taskService.getAllTasks();
     }
 
     @GetMapping("/id/{id}")
-    public TaskDTO getTaskById(@PathVariable Long id) {
+    public TaskResponseDTO getTaskById(@PathVariable Long id) {
         return taskService.getTaskById(id);
     }
 
     @GetMapping("/active")
-    public List<TaskDTO> getActiveTasks() {
+    public List<TaskResponseDTO> getActiveTasks() {
         return taskService.getActiveTasks();
     }
 
     @GetMapping("/overdue")
-    public List<TaskDTO> getOverdueTasks() {
+    public List<TaskResponseDTO> getOverdueTasks() {
         return taskService.getOverdueTasks();
     }
 
     @GetMapping("/user/{userId}")
-    public List<TaskDTO> getTasksByUserId(@PathVariable Long userId) {
+    public List<TaskResponseDTO> getTasksByUserId(@PathVariable Long userId) {
         return taskService.getTasksByUserId(userId);
     }
 
     @GetMapping("/username/{username}")
-    public List<TaskDTO> getTasksByUsername(@PathVariable String username) {
+    public List<TaskResponseDTO> getTasksByUsername(@PathVariable String username) {
         return taskService.getTasksByUsername(username);
     }
 
     @GetMapping("/status")
-    public List<TaskDTO> getTasksByStatusName(@RequestParam String statusName) {
+    public List<TaskResponseDTO> getTasksByStatusName(@RequestParam String statusName) {
         return taskService.getTasksByStatusName(statusName);
     }
 
     @PostMapping
-    public TaskDTO createTask(@RequestBody @Valid TaskDTO taskDTO) {
+    public TaskResponseDTO createTask(@RequestBody @Valid TaskCreateRequestDTO taskDTO) {
         return taskService.createTask(taskDTO);
     }
 
     @PutMapping("/{id}")
-    public TaskDTO updateTask(@PathVariable Long id, @RequestBody @Valid TaskDTO taskDTO) {
+    public TaskResponseDTO updateTask(@PathVariable Long id, @RequestBody @Valid TaskUpdateRequestDTO taskDTO) {
         return taskService.updateTask(id, taskDTO);
     }
 
     @PatchMapping("/{id}/status")
-    public TaskDTO updateTaskStatus(@PathVariable Long id, @RequestParam String statusName) {
+    public TaskResponseDTO updateTaskStatus(@PathVariable Long id, @RequestParam String statusName) {
         return taskService.updateTaskStatus(id, statusName);
     }
 
     @DeleteMapping("/{id}")
-    public TaskDTO deleteTask(@PathVariable Long id) {
+    public TaskResponseDTO deleteTask(@PathVariable Long id) {
         return taskService.deleteTask(id);
     }
 }

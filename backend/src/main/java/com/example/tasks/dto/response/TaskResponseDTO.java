@@ -1,8 +1,6 @@
-package com.example.tasks.dto;
+package com.example.tasks.dto.response;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import com.example.tasks.dto.shared.StatusTypeSummaryDTO;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -11,22 +9,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TaskDTO {
+public class TaskResponseDTO {
     private long taskId;
-
-    @NotBlank
     private String taskName;
-
-    @NotNull
     private Long userId;
-
-    @NotBlank
-    private String statusTypeId;
-
-    @FutureOrPresent
+    private StatusTypeSummaryDTO statusType;
     private LocalDateTime dueDate;
-
-    @NotBlank
     private String createdBy;
     private LocalDateTime creationDate;
     private LocalDateTime lastUpdateDate;
