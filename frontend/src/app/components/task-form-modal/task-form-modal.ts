@@ -109,7 +109,7 @@ export class TaskFormModal implements OnInit, OnChanges {
           this.close.emit();
         },
         error: (err) => {
-          console.error('Error creating task:', err);
+          console.error('Error creating task: ', err);
         },
       });
     }

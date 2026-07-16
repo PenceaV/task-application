@@ -18,8 +18,16 @@ export class MyTasksComponent implements OnInit {
   selectedTask: TaskResponse | null = null;
 
   ngOnInit() {
-    this.taskService.getTasks().subscribe((res) => {
-      this.tasks.set(res);
+    this.loadTasks();
+  }
+
+  deleteTask(id: number) {
+    this.taskService.deleteTask(id).subscribe((res) => {
+      if (res) {
+        this.loadTasks();
+      } else {
+        console.log("Error when deleting task!")
+      }
     });
   }
 
@@ -35,6 +43,12 @@ export class MyTasksComponent implements OnInit {
 
   hideModal() {
     this.isModalVisible = false;
+  }
+
+  loadTasks() {
+    this.taskService.getTasks().subscribe((res) => {
+      this.tasks.set(res);
+    });
   }
 
 }

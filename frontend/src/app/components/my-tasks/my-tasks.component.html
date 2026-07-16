@@ -12,7 +12,7 @@
             <th scope="col" class="text-uppercase small fw-bold text-muted">Name</th>
             <th scope="col" class="text-uppercase small fw-bold text-muted">Status</th>
             <th scope="col" class="text-uppercase small fw-bold text-muted">Due Date</th>
-            <th></th>
+            <th scope="col" colspan="2" class="text-uppercase small fw-bold text-muted text-center">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -25,14 +25,17 @@
                 </span>
               </td>
               <td class="text-muted ">{{ task.dueDate | date:'dd MMM yyyy, HH:mm' }}</td>
-              <td class="text-end">
+              <td class="text-center">
                 <button (click)="openEditModal(task)" class="btn btn-sm btn-outline-secondary px-3">Edit</button>
+              </td>
+              <td class="text-center">
+                <button (click)="deleteTask(task.taskId)" class="btn btn-sm btn-outline-danger px-3">Delete</button>
               </td>
             </tr>
           }
           @if (tasks().length === 0) {
             <tr>
-              <td colspan="4" class="text-center py-5 text-muted fst-italic">No tasks found.</td>
+              <td colspan="5" class="text-center py-5 text-muted fst-italic">No tasks found.</td>
             </tr>
           }
         </tbody>
@@ -53,6 +56,6 @@
   <app-task-form-modal
     [task]="selectedTask"
     (close)="hideModal()"
-    (saved)="ngOnInit()">
+    (saved)="loadTasks()">
   </app-task-form-modal>
 }
