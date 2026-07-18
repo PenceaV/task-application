@@ -1,6 +1,7 @@
 package com.example.tasks.controller;
 
 import com.example.tasks.dto.request.TaskCreateRequestDTO;
+import com.example.tasks.dto.request.TaskFilterRequest;
 import com.example.tasks.dto.request.TaskUpdateRequestDTO;
 import com.example.tasks.dto.response.TaskResponseDTO;
 import com.example.tasks.service.TaskService;
@@ -8,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -20,6 +22,11 @@ public class TaskController {
     @GetMapping
     public List<TaskResponseDTO> getAllTasks() {
         return taskService.getAllTasks();
+    }
+
+    @GetMapping("/search")
+    public List<TaskResponseDTO> getTasksByFilter(TaskFilterRequest filterRequest) {
+        return taskService.getTasksByFilter(filterRequest);
     }
 
     @GetMapping("/id/{id}")

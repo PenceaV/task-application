@@ -4,6 +4,7 @@ import com.example.tasks.domain.StatusType;
 import com.example.tasks.domain.Task;
 import com.example.tasks.domain.User;
 import com.example.tasks.dto.request.TaskCreateRequestDTO;
+import com.example.tasks.dto.request.TaskFilterRequest;
 import com.example.tasks.dto.request.TaskUpdateRequestDTO;
 import com.example.tasks.dto.response.TaskResponseDTO;
 import com.example.tasks.exception.StatusNotFoundException;
@@ -16,8 +17,10 @@ import com.example.tasks.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
@@ -34,10 +37,9 @@ public class TaskService {
     public List<TaskResponseDTO> getAllTasks() {
         log.info("Tasks retrieved!");
 
-        return taskRepository.findAll()
+        return taskRepository.findAll(Sort.by(Sort.Direction.DESC, "dueDate"))
                 .stream()
                 .map(taskMapper::toResponseDTO)
-                .sorted(Comparator.comparing(TaskResponseDTO::getDueDate).reversed())
                 .toList();
     }
 
@@ -54,6 +56,26 @@ public class TaskService {
 
         return taskRepository.findByActiveStatus()
                 .stream()
+                .map(taskMapper::toResponseDTO)
+                .toList();
+    }
+
+    public List<TaskResponseDTO> getTasksByFilter(TaskFilterRequest filterRequest) {
+        LocalDateTime dueDateStart = filterRequest.getDueDate() != null ? filterRequest.getDueDate().atStartOfDay() : null;
+        LocalDateTime dueDateEnd = filterRequest.getDueDate() != null ? filterRequest.getDueDate().plusDays(1).atStartOfDay() : null;
+
+        Sort sort = "asc".equalsIgnoreCase(filterRequest.getSortDir())
+                ? Sort.by(Sort.Direction.ASC, "dueDate")
+                : Sort.by(Sort.Direction.DESC, "dueDate");
+
+        return taskRepository.findByFilter(
+                filterRequest.getAssignedTo(),
+                filterRequest.getSubject(),
+                dueDateStart,
+                dueDateEnd,
+                filterRequest.getStatus(),
+                sort
+        ).stream()
                 .map(taskMapper::toResponseDTO)
                 .toList();
     }

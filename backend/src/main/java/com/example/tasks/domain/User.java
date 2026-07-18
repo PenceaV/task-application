@@ -5,6 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +31,22 @@ public class User {
     @Column(name = "USERNAME")
     private String username;
 
+    @Column(name = "EMAIL", nullable = false)
+    private String email;
+
+    @Column(name = "PASSWORD", nullable = false)
+    private String password;
+
     @Column(name = "BIRTH_DATE")
-    private LocalDateTime birthDate;
+    private LocalDate birthDate;
 
     @Column(name = "IS_INTERNAL")
     @Builder.Default
-    @JdbcTypeCode(SqlTypes.NUMERIC)
-    private Boolean isInternal = true; // ar trb sa fie Boolean
+    private Integer isInternal = 0; // ar trb sa fie Boolean
 
     @Column(name = "CREATED_BY", nullable = false)
-    private String createdBy;
+    @Builder.Default
+    private String createdBy = "SYSTEM";
 
     @Column(name = "CREATION_DATE", nullable = false)
     @Builder.Default
@@ -50,8 +57,10 @@ public class User {
     private LocalDateTime lastUpdateDate = LocalDateTime.now();
 
     @Column(name = "LAST_UPDATED_BY", nullable = false)
-    private String lastUpdatedBy;
+    @Builder.Default
+    private String lastUpdatedBy = "SYSTEM";
 
     @Column(name = "CREATED_BY_FULLNAME")
-    private String createdByFullName;
+    @Builder.Default
+    private String createdByFullName = "System";
 }

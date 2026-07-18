@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { TaskCreateRequest, TaskResponse, TaskUpdateRequest } from '../models/task.model';
+import { TaskFilters } from '../models/task-filters.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,5 +25,16 @@ export class TasksService {
 
   deleteTask(id: number): Observable<TaskResponse> {
     return this.http.delete<TaskResponse>(`${this.apiUrl}/${id}`);
+  }
+
+  searchTasks(filters: Partial<TaskFilters> | { subject?: string }) {
+    let params = new HttpParams();
+    Object.entries(filters).forEach(([key, value]) => {
+      if (value !== undefined && value !== null && value !== '') {
+        params = params.set(key, value);
+      }
+    });
+
+    return this.http.get<TaskResponse[]>(`${this.apiUrl}/search`, { params });
   }
 }

@@ -1,0 +1,51 @@
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(80vh - 56px);">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">{{ isRegisterMode ? 'Register' : 'Login' }}</h2>
+
+    @if (errorMessage) {
+      <div class="alert {{ errorMessage.includes('successful') ? 'alert-success' : 'alert-danger' }} text-center py-2 mb-3" role="alert">
+        {{ errorMessage }}
+      </div>
+    }
+
+    @if (!isRegisterMode) {
+      <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Enter password">
+        </div>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="authForm.invalid">Login</button>
+      </form>
+    } @else {
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="reg-username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="reg-username" formControlName="username" placeholder="Username">
+        </div>
+        <div class="mb-3">
+          <label for="reg-email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="reg-email" formControlName="email" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="reg-password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="reg-password" formControlName="password" placeholder="Min 6 characters">
+        </div>
+        <div class="mb-3">
+          <label for="reg-birthDate" class="form-label">Birth Date</label>
+          <input type="date" class="form-control" id="reg-birthDate" formControlName="birthDate">
+        </div>
+        <button type="submit" class="btn btn-success w-100" [disabled]="registerForm.invalid">Register</button>
+      </form>
+    }
+
+    <div class="text-center mt-3">
+      <a href="javascript:void(0)" (click)="toggleMode()">
+        {{ isRegisterMode ? 'Already have an account? Login' : 'Don\'t have an account? Register' }}
+      </a>
+    </div>
+  </div>
+</div>

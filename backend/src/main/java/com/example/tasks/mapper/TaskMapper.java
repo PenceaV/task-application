@@ -20,8 +20,8 @@ public class TaskMapper {
                 .user(user)
                 .statusType(statusType)
                 .dueDate(taskDTO.getDueDate())
-                .createdBy(taskDTO.getCreatedBy())
-                .lastUpdatedBy(taskDTO.getCreatedBy())
+                .createdBy("SYSTEM")
+                .lastUpdatedBy("SYSTEM")
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class TaskMapper {
         task.setUser(user);
         task.setStatusType(statusType);
         task.setDueDate(taskDTO.getDueDate());
-        task.setLastUpdatedBy(taskDTO.getLastUpdatedBy());
+        task.setLastUpdatedBy("SYSTEM");
         task.setLastUpdateDate(LocalDateTime.now());
     }
 

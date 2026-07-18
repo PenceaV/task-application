@@ -3,6 +3,7 @@ package com.example.tasks.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -12,17 +13,14 @@ import java.time.LocalDateTime;
 @Builder
 public class UserDTO {
     private Long userId;
-
+// TODO: register auth dto user
     @NotBlank
     private String username;
 
-    private LocalDateTime birthDate;
-    private Boolean isInternal;
-
     @NotBlank
-    private String createdBy;
-    private LocalDateTime creationDate;
-    private LocalDateTime lastUpdateDate;
-    private String lastUpdatedBy;
-    private String createdByFullName;
+    private String email;
+    @NotBlank
+    private String password;
+
+    private LocalDate birthDate;
 }

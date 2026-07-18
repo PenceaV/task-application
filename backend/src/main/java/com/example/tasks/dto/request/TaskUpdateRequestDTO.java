@@ -21,7 +21,4 @@ public class TaskUpdateRequestDTO {
 
     @FutureOrPresent
     private LocalDateTime dueDate;
-
-    @NotBlank
-    private String lastUpdatedBy;
 }

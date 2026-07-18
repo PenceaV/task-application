@@ -33,7 +33,8 @@ public class Task {
     private LocalDateTime dueDate;
 
     @Column(name = "CREATED_BY", nullable = false)
-    private String createdBy;
+    @Builder.Default
+    private String createdBy = "SYSTEM";
 
     @Column(name = "CREATION_DATE", nullable = false)
     @Builder.Default
@@ -44,7 +45,8 @@ public class Task {
     private LocalDateTime lastUpdateDate = LocalDateTime.now();
 
     @Column(name = "LAST_UPDATED_BY", nullable = false)
-    private String lastUpdatedBy;
+    @Builder.Default
+    private String lastUpdatedBy = "SYSTEM";
 
     @Column(name = "CREATED_BY_FULLNAME")
     @Builder.Default

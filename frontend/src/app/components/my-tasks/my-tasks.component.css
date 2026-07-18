@@ -38,3 +38,24 @@
   color: #41464b;
   border-color: #d6d8db;
 }
+
+.status-pill.cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
+}
+
+.status-pill.not-started {
+  background-color: #e2e3e5;
+  color: #383d41;
+  border-color: #d6d8db;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-pointer:hover {
+  background-color: #f1f3f5;
+}
+

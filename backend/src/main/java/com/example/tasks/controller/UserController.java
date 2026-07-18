@@ -4,7 +4,6 @@ import com.example.tasks.dto.UserDTO;
 import com.example.tasks.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,12 +28,6 @@ public class UserController {
     @GetMapping("/username/{username}")
     public UserDTO getUserByUsername(@PathVariable String username) {
         return userService.getUserByUsername(username);
-    }
-
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO createUser(@RequestBody @Valid UserDTO userDTO) {
-        return userService.createUser(userDTO);
     }
 
     @PutMapping("/{id}")

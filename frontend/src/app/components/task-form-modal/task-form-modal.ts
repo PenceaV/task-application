@@ -44,7 +44,6 @@ export class TaskFormModal implements OnInit, OnChanges {
     userId: [null, Validators.required],
     statusTypeId: ['', Validators.required],
     dueDate: [null, Validators.required],
-    createdBy: ['', Validators.required],
   });
 
   users = signal<User[]>([]);
@@ -69,12 +68,16 @@ export class TaskFormModal implements OnInit, OnChanges {
         userId: this.task.userId,
         statusTypeId: this.task.statusType.statusTypeId,
         dueDate: this.task.dueDate,
-        createdBy: this.task.createdBy,
       });
     } else {
       this.isEditMode = false;
       this.currentTaskId = null;
-      this.taskForm.reset();
+      this.taskForm.reset({
+        taskName: '',
+        userId: null,
+        statusTypeId: '',
+        dueDate: null
+      });
     }
   }
 
@@ -89,7 +92,6 @@ export class TaskFormModal implements OnInit, OnChanges {
         userId: this.taskForm.value.userId,
         statusTypeId: this.taskForm.value.statusTypeId,
         dueDate: this.taskForm.value.dueDate,
-        lastUpdatedBy: this.taskForm.value.createdBy,
       };
 
       this.taskService.updateTask(this.currentTaskId!, updatePayload).subscribe({

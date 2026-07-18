@@ -3,7 +3,6 @@ export interface TaskCreateRequest {
   userId: number;
   statusTypeId: string;
   dueDate: string;
-  createdBy: string;
 }
 
 export interface TaskUpdateRequest {
@@ -11,7 +10,6 @@ export interface TaskUpdateRequest {
   userId: number;
   statusTypeId: string;
   dueDate: string;
-  lastUpdatedBy: string;
 }
 
 
@@ -23,7 +21,14 @@ export interface StatusType {
 export interface User {
   userId: number;
   username: string;
-  isInternal: boolean;
+  email: string;
+  password: string;
+  birthDate: string;
+}
+
+export interface Credentials {
+  email: string;
+  password: string;
 }
 
 export interface TaskResponse {

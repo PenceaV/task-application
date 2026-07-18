@@ -2,7 +2,11 @@ package com.example.tasks.service;
 
 import com.example.tasks.domain.User;
 import com.example.tasks.dto.UserDTO;
+import com.example.tasks.dto.request.CredentialsDTO;
+import com.example.tasks.dto.response.UserResponseDTO;
+import com.example.tasks.exception.DuplicateEmailException;
 import com.example.tasks.exception.DuplicateUsernameException;
+import com.example.tasks.exception.InvalidCredentialsException;
 import com.example.tasks.exception.UserNotFoundException;
 import com.example.tasks.mapper.UserMapper;
 import com.example.tasks.repository.UserRepository;
@@ -47,22 +51,6 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO createUser(UserDTO userDTO) {
-        log.info("Creating user: {}", userDTO.getUsername());
-
-        User user = userMapper.toEntity(userDTO);
-
-        if (userRepository.existsByUsername(user.getUsername()))
-            throw new DuplicateUsernameException("User with username: " + user.getUsername() + " already exists.");
-
-        user.setLastUpdatedBy(userDTO.getCreatedBy());
-
-        User savedUser = userRepository.save(user);
-
-        return userMapper.toDto(savedUser);
-    }
-
-    @Transactional
     public UserDTO updateUser(Long id, UserDTO userDTO) {
         log.info("Updating user with id: {}", id);
 
@@ -71,9 +59,6 @@ public class UserService {
 
         user.setUsername(userDTO.getUsername());
         user.setBirthDate(userDTO.getBirthDate());
-        user.setIsInternal(userDTO.getIsInternal());
-
-        user.setLastUpdatedBy(userDTO.getCreatedBy());
         user.setLastUpdateDate(LocalDateTime.now());
 
         User updatedUser = userRepository.save(user);

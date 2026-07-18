@@ -22,7 +22,4 @@ public class TaskCreateRequestDTO {
     @FutureOrPresent
     @NotNull
     private LocalDateTime dueDate;
-
-    @NotBlank
-    private String createdBy;
 }
