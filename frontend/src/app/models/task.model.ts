@@ -43,3 +43,7 @@ export interface TaskResponse {
   lastUpdatedBy: string;
   createdByFullName: string;
 }
+
+export interface LoginResponse {
+  token: string
+}

@@ -1,12 +1,12 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { AuthService } from './services/auth-service';
+import { AuthService } from './services/auth.service';
 
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet, RouterLink],
-  templateUrl: './app.html',
-  styleUrl: './app.css',
+  templateUrl: './app.component.html',
+  styleUrl: './app.component.css',
 })
 export class App {
   protected authService = inject(AuthService);
@@ -14,5 +14,6 @@ export class App {
 
   logout() {
     this.authService.logout();
+    location.reload();
   }
 }

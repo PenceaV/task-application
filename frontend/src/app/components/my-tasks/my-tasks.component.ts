@@ -1,7 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
-import { TasksService } from '../../services/tasks-service';
+import { TasksService } from '../../services/tasks.service';
 import { CommonModule, DatePipe } from '@angular/common';
-import { TaskFormModal } from '../task-form-modal/task-form-modal';
+import { TaskFormModal } from '../task-form-modal/task-form-modal.component';
 import { TaskResponse } from '../../models/task.model';
 import { TaskFilters } from '../../models/task-filters.model';
 import { TaskFiltersComponent } from '../task-filters/task-filters.component';

@@ -1,8 +1,8 @@
 import { Component, EventEmitter, inject, Input, OnInit, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { StatusTypeService } from '../../services/status-type-service';
-import { UserService } from '../../services/user-service';
+import { StatusTypeService } from '../../services/status-type.service';
+import { UserService } from '../../services/user.service';
 import { StatusType, User } from '../../models/task.model';
 import { TaskFilters } from '../../models/task-filters.model';
 

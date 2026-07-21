@@ -1,0 +1,33 @@
+<div class="d-flex justify-content-center align-items-center" style="min-height: calc(80vh - 56px);">
+  <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+    <h2 class="text-center mb-4">{{ isLogin ? 'Login' : 'Register' }}</h2>
+
+    @if (message) {
+      <div class="alert {{ message.includes('successful') ? 'alert-success' : 'alert-danger' }} text-center py-2 mb-3" role="alert">
+        {{ message }}
+      </div>
+    }
+
+    @if (isLogin) {
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email address</label>
+          <input type="email" class="form-control" id="email" formControlName="email" placeholder="name@example.com">
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" formControlName="password" placeholder="Enter password">
+        </div>
+        <button type="submit" class="btn btn-primary w-100" [disabled]="loginForm.invalid">Login</button>
+      </form>
+    } @else {
+      <app-register-component (registered)="onUserRegistered($event)"></app-register-component>
+    }
+
+    <div class="text-center mt-3">
+      <a href="javascript:void(0)" (click)="toggleMode()">
+        {{ isLogin ? 'Already have an account? Login' : 'Don\'t have an account? Register' }}
+      </a>
+    </div>
+  </div>
+</div>

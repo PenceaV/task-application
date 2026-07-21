@@ -1,0 +1,19 @@
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <div class="mb-3">
+    <label for="reg-username" class="form-label">Username</label>
+    <input type="text" class="form-control" id="reg-username" formControlName="username" placeholder="Username">
+  </div>
+  <div class="mb-3">
+    <label for="reg-email" class="form-label">Email address</label>
+    <input type="email" class="form-control" id="reg-email" formControlName="email" placeholder="name@example.com">
+  </div>
+  <div class="mb-3">
+    <label for="reg-password" class="form-label">Password</label>
+    <input type="password" class="form-control" id="reg-password" formControlName="password" placeholder="Min 6 characters">
+  </div>
+  <div class="mb-3">
+    <label for="reg-birthDate" class="form-label">Birth Date</label>
+    <input type="date" class="form-control" id="reg-birthDate" formControlName="birthDate">
+  </div>
+  <button type="submit" class="btn btn-success w-100" [disabled]="registerForm.invalid">Register</button>
+</form>

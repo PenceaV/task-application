@@ -16,15 +16,16 @@ import {
   TaskUpdateRequest,
   User,
 } from '../../models/task.model';
-import { TasksService } from '../../services/tasks-service';
-import { UserService } from '../../services/user-service';
-import { StatusTypeService } from '../../services/status-type-service';
+import { TasksService } from '../../services/tasks.service';
+import { UserService } from '../../services/user.service';
+import { StatusTypeService } from '../../services/status-type.service';
 
 @Component({
   selector: 'app-task-form-modal',
   imports: [ReactiveFormsModule],
-  templateUrl: './task-form-modal.html',
-  styleUrl: './task-form-modal.css',
+  templateUrl: './task-form-modal.component.html',
+  styleUrl: './task-form-modal.component.css',
+  standalone: true,
 })
 export class TaskFormModal implements OnInit, OnChanges {
   private taskService = inject(TasksService);
@@ -76,7 +77,7 @@ export class TaskFormModal implements OnInit, OnChanges {
         taskName: '',
         userId: null,
         statusTypeId: '',
-        dueDate: null
+        dueDate: null,
       });
     }
   }
@@ -100,8 +101,8 @@ export class TaskFormModal implements OnInit, OnChanges {
           this.close.emit();
         },
         error: (err) => {
-          console.error("Error updating task: ", err);
-        }
+          console.error('Error updating task: ', err);
+        },
       });
     } else {
       const createPayload: TaskCreateRequest = this.taskForm.value;
