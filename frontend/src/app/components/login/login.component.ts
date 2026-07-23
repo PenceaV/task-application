@@ -2,8 +2,8 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { RegisterComponent } from '../register/register.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-login-component',
@@ -40,10 +40,11 @@ export class LoginComponent {
         this.authService.setToken(res.token);
         this.router.navigate(['/tasks']);
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         console.error('Login failed', err);
 
-        this.message = 'Login failed. Invalid email or password.';
+        this.message = err.error; // TODO: Does not appear on failed login
+        console.log(this.message);
       },
     });
     this.loginForm.reset();

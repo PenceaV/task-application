@@ -2,6 +2,7 @@
   <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
     <h2 class="text-center mb-4">{{ isLogin ? 'Login' : 'Register' }}</h2>
 
+
     @if (message) {
       <div class="alert {{ message.includes('successful') ? 'alert-success' : 'alert-danger' }} text-center py-2 mb-3" role="alert">
         {{ message }}
@@ -26,7 +27,7 @@
 
     <div class="text-center mt-3">
       <a href="javascript:void(0)" (click)="toggleMode()">
-        {{ isLogin ? 'Already have an account? Login' : 'Don\'t have an account? Register' }}
+        {{ isLogin ? 'Already have an account? Register' : 'Don\'t have an account? Login' }}
       </a>
     </div>
   </div>

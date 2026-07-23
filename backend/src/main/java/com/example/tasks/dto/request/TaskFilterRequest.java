@@ -11,5 +11,5 @@ public class TaskFilterRequest {
     private String subject;
     private LocalDate dueDate;
     private String status;
-    private String sortDir; // Always by dueDate as per previous requirements
+    private String sortDir;
 }

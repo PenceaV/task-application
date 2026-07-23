@@ -2,11 +2,6 @@ package com.example.tasks.service;
 
 import com.example.tasks.domain.User;
 import com.example.tasks.dto.UserDTO;
-import com.example.tasks.dto.request.CredentialsDTO;
-import com.example.tasks.dto.response.UserResponseDTO;
-import com.example.tasks.exception.DuplicateEmailException;
-import com.example.tasks.exception.DuplicateUsernameException;
-import com.example.tasks.exception.InvalidCredentialsException;
 import com.example.tasks.exception.UserNotFoundException;
 import com.example.tasks.mapper.UserMapper;
 import com.example.tasks.repository.UserRepository;
